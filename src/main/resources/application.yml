@@ -15,3 +15,9 @@ spring:
         format_sql: true
     hibernate:
       ddl-auto: create-drop
+
+application:
+  jwt:
+    secretKey: securesecuresecuresecuresecuresecuresecuresecuresecuresecuresecure
+    expiration: 86400000
+    tokenPrefix: Bearer
