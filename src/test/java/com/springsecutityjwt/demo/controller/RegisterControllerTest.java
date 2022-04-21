@@ -1,7 +1,6 @@
 package com.springsecutityjwt.demo.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.springsecutityjwt.demo.config.security.SecurityConfiguration;
 import com.springsecutityjwt.demo.dto.request.RegisterRequest;
 import com.springsecutityjwt.demo.dto.response.RegisterResponse;
 import com.springsecutityjwt.demo.exception.UsernameAlreadyUsedException;
@@ -13,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -35,6 +33,7 @@ public class RegisterControllerTest {
     @MockBean
     private RegisterService registerService;
 
+    // TODO: Remove this @MockBean here. It's used by the SecurityConfiguration
     @MockBean
     private AuthenticationServiceImpl authenticationService;
 
