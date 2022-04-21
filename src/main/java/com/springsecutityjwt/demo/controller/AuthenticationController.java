@@ -2,7 +2,7 @@ package com.springsecutityjwt.demo.controller;
 
 import com.springsecutityjwt.demo.dto.request.AuthenticationRequest;
 import com.springsecutityjwt.demo.dto.response.JwtResponse;
-import com.springsecutityjwt.demo.service.JwtService;
+import com.springsecutityjwt.demo.service.jwt.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;

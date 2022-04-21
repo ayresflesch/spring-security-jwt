@@ -2,7 +2,7 @@ package com.springsecutityjwt.demo.controller;
 
 import com.springsecutityjwt.demo.dto.request.RegisterRequest;
 import com.springsecutityjwt.demo.dto.response.RegisterResponse;
-import com.springsecutityjwt.demo.service.RegisterService;
+import com.springsecutityjwt.demo.service.register.RegisterService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

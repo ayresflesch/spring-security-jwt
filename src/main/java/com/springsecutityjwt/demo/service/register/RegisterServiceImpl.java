@@ -1,11 +1,10 @@
-package com.springsecutityjwt.demo.service.impl;
+package com.springsecutityjwt.demo.service.register;
 
 import com.springsecutityjwt.demo.dto.request.RegisterRequest;
 import com.springsecutityjwt.demo.dto.response.RegisterResponse;
 import com.springsecutityjwt.demo.exception.UsernameAlreadyUsedException;
 import com.springsecutityjwt.demo.model.User;
 import com.springsecutityjwt.demo.repository.UserRepository;
-import com.springsecutityjwt.demo.service.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

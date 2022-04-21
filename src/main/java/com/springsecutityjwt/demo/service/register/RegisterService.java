@@ -1,4 +1,4 @@
-package com.springsecutityjwt.demo.service;
+package com.springsecutityjwt.demo.service.register;
 
 import com.springsecutityjwt.demo.dto.request.RegisterRequest;
 import com.springsecutityjwt.demo.dto.response.RegisterResponse;
