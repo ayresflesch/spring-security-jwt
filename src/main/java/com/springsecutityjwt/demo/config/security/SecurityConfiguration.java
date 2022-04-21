@@ -1,6 +1,6 @@
 package com.springsecutityjwt.demo.config.security;
 
-import com.springsecutityjwt.demo.service.impl.AuthenticationServiceImpl;
+import com.springsecutityjwt.demo.service.authentication.AuthenticationServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

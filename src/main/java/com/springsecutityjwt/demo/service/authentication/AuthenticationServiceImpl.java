@@ -1,4 +1,4 @@
-package com.springsecutityjwt.demo.service.impl;
+package com.springsecutityjwt.demo.service.authentication;
 
 import com.springsecutityjwt.demo.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
