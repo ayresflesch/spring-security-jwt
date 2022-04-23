@@ -1,5 +1,6 @@
 package com.springsecutityjwt.demo.model;
 
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -26,9 +27,14 @@ public class User implements UserDetails {
     @NotNull
     private String password;
 
-    public User(String username, String password) {
+    @OneToOne(optional = false)
+    private Role role;
+
+    @Builder
+    public User(String username, String password, Role role) {
         this.username = username;
         this.password = password;
+        this.role = role;
     }
 
     @Override
