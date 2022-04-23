@@ -5,6 +5,6 @@ import com.springsecutityjwt.demo.model.Role;
 
 public class RoleMapper {
     public static RoleResponse toResponse(Role role) {
-        return new RoleResponse(role.getDescription());
+        return new RoleResponse(role.getId(), role.getDescription());
     }
 }

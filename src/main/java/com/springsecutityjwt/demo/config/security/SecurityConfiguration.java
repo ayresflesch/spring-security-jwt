@@ -19,6 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
+    private static final String ALLOWED_GET_URL = "/h2-console";
+    private static final String[] PERMIT_POST_URLS = {"/register", "/auth"};
+
     @Autowired
     private AuthenticationServiceImpl authenticationService;
 
@@ -45,9 +48,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/h2-console").permitAll()
-            .antMatchers(HttpMethod.POST, "/register").permitAll()
-            .antMatchers(HttpMethod.POST, "/auth").permitAll()
+            .antMatchers(HttpMethod.GET, ALLOWED_GET_URL).permitAll()
+            .antMatchers(HttpMethod.POST, PERMIT_POST_URLS).permitAll()
             .anyRequest().authenticated()
             .and().csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);

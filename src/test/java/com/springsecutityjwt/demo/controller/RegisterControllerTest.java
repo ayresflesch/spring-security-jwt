@@ -41,7 +41,7 @@ public class RegisterControllerTest {
     @Test
     public void register_NewUserWithAllFieldsFilled_ReturnsCreated() throws Exception {
         RegisterRequest registerRequest = new RegisterRequest("Teste", "teste");
-        RegisterResponse registerResponse = new RegisterResponse(1L, registerRequest.getUsername(), new RoleResponse("description"));
+        RegisterResponse registerResponse = new RegisterResponse(1L, registerRequest.getUsername(), new RoleResponse(1L, "description"));
 
         when(registerService.registerUser(registerRequest)).thenReturn(registerResponse);
 
