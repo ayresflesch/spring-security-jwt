@@ -1,8 +1,8 @@
 package com.springsecutityjwt.demo.service.jwt;
 
+import com.springsecutityjwt.demo.config.security.ApplicationUser;
 import com.springsecutityjwt.demo.config.security.JwtConfiguration;
 import com.springsecutityjwt.demo.dto.response.JwtResponse;
-import com.springsecutityjwt.demo.model.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
@@ -21,7 +21,7 @@ public class JwtServiceImpl implements JwtService {
 
     @Override
     public JwtResponse generateToken(Authentication authUser) {
-        User loggedUser = (User) authUser.getPrincipal();
+        ApplicationUser loggedUser = (ApplicationUser) authUser.getPrincipal();
         Date today = new Date();
         Date expirationDate = new Date(today.getTime() + jwtConfiguration.getExpiration());
 

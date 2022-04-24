@@ -18,6 +18,7 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserMapper userMapper;
 
+    @Override
     public List<UserResponse> getAllUsers() {
         return userRepository
             .findAll()
