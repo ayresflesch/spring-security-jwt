@@ -5,4 +5,8 @@ import org.springframework.security.core.Authentication;
 
 public interface JwtService {
     JwtResponse generateToken(Authentication authUser);
+
+    boolean isJwtValid(String token);
+
+    Long getUserId(String token);
 }

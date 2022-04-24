@@ -1,6 +1,7 @@
 package com.springsecutityjwt.demo.mapper;
 
 import com.springsecutityjwt.demo.dto.request.RegisterRequest;
+import com.springsecutityjwt.demo.dto.response.UserResponse;
 import com.springsecutityjwt.demo.model.User;
 import com.springsecutityjwt.demo.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,14 @@ public class UserMapper {
             .username(registerRequest.getUsername())
             .password(passwordEncoder.encode(registerRequest.getPassword()))
             .role(roleRepository.findById(defaultRoleId).get())
+            .build();
+    }
+
+    public UserResponse toUserResponse(User user) {
+        return UserResponse.builder()
+            .id(user.getId())
+            .username(user.getUsername())
+            .role(RoleMapper.toResponse(user.getRole()))
             .build();
     }
 }
