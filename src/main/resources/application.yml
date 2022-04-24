@@ -20,4 +20,10 @@ application:
   jwt:
     secretKey: securesecuresecuresecuresecuresecuresecuresecuresecuresecuresecure
     expiration: 86400000
-    tokenPrefix: Bearer
+    tokenPrefix: "Bearer "
+
+logging:
+  level:
+    org:
+      springframework:
+        security: DEBUG

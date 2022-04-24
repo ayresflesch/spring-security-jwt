@@ -1,6 +1,7 @@
 package com.springsecutityjwt.demo.config;
 
 import com.springsecutityjwt.demo.dto.response.ErrorResponse;
+import com.springsecutityjwt.demo.exception.ResourceNotFoundException;
 import com.springsecutityjwt.demo.exception.UsernameAlreadyUsedException;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.FieldError;
@@ -19,6 +20,12 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(UsernameAlreadyUsedException.class)
     public ErrorResponse handleUsernameNotFoundException(UsernameAlreadyUsedException exception) {
         return new ErrorResponse("username", exception.getMessage());
+    }
+
+    @ResponseStatus(code = HttpStatus.UNPROCESSABLE_ENTITY)
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public ErrorResponse handleUsernameNotFoundException(ResourceNotFoundException exception) {
+        return new ErrorResponse(null, exception.getMessage());
     }
 
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)

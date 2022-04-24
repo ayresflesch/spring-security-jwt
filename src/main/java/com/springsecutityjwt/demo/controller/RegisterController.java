@@ -1,8 +1,9 @@
 package com.springsecutityjwt.demo.controller;
 
-import com.springsecutityjwt.demo.dto.request.RegisterRequest;
-import com.springsecutityjwt.demo.dto.response.RegisterResponse;
-import com.springsecutityjwt.demo.service.register.RegisterService;
+import com.springsecutityjwt.demo.dto.request.UserRequest;
+import com.springsecutityjwt.demo.dto.response.UserResponse;
+import com.springsecutityjwt.demo.service.user.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,17 +16,14 @@ import java.net.URI;
 @RestController
 public class RegisterController {
 
-    private final RegisterService registerService;
-
-    public RegisterController(RegisterService registerService) {
-        this.registerService = registerService;
-    }
+    @Autowired
+    private UserService userService;
 
     @PostMapping("register")
-    public ResponseEntity register(@RequestBody @Valid RegisterRequest registerRequest, UriComponentsBuilder uriBuilder) {
-        RegisterResponse registerResponse = registerService.registerUser(registerRequest);
+    public ResponseEntity<UserResponse> register(@RequestBody @Valid UserRequest userRequest, UriComponentsBuilder uriBuilder) {
+        UserResponse userResponse = userService.createUser(userRequest);
 
-        URI uri = uriBuilder.path("/users/{id}").buildAndExpand(registerResponse.getId()).toUri();
-        return ResponseEntity.created(uri).body(registerResponse);
+        URI uri = uriBuilder.path("/users/{id}").buildAndExpand(userResponse.getId()).toUri();
+        return ResponseEntity.created(uri).body(userResponse);
     }
 }

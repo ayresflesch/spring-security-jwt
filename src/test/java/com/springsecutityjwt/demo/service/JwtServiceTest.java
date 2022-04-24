@@ -1,5 +1,6 @@
 package com.springsecutityjwt.demo.service;
 
+import com.springsecutityjwt.demo.config.security.ApplicationUser;
 import com.springsecutityjwt.demo.config.security.JwtConfiguration;
 import com.springsecutityjwt.demo.dto.response.JwtResponse;
 import com.springsecutityjwt.demo.model.Role;
@@ -36,8 +37,9 @@ public class JwtServiceTest {
     public void generateToken_WithAuthentication_ReturnsJwtResponse() {
         Authentication authentication = mock(Authentication.class);
         User user = new User(1L, "teste", "teste", new Role(1L, "test"));
+        ApplicationUser applicationUser = new ApplicationUser(1L, "teste", "teste", user.getGrantedAuthorities());
 
-        when(authentication.getPrincipal()).thenReturn(user);
+        when(authentication.getPrincipal()).thenReturn(applicationUser);
         when(jwtConfiguration.getSecretKey()).thenReturn("secretsecretsecretsecretsecretsecretsecretsecret");
         when(jwtConfiguration.getTokenPrefix()).thenReturn("prefix");
 
