@@ -3,6 +3,7 @@ package com.springsecutityjwt.demo.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.springsecutityjwt.demo.dto.request.RegisterRequest;
 import com.springsecutityjwt.demo.dto.response.RegisterResponse;
+import com.springsecutityjwt.demo.dto.response.RoleResponse;
 import com.springsecutityjwt.demo.exception.UsernameAlreadyUsedException;
 import com.springsecutityjwt.demo.service.authentication.AuthenticationServiceImpl;
 import com.springsecutityjwt.demo.service.register.RegisterService;
@@ -40,7 +41,7 @@ public class RegisterControllerTest {
     @Test
     public void register_NewUserWithAllFieldsFilled_ReturnsCreated() throws Exception {
         RegisterRequest registerRequest = new RegisterRequest("Teste", "teste");
-        RegisterResponse registerResponse = new RegisterResponse(1L, registerRequest.getUsername());
+        RegisterResponse registerResponse = new RegisterResponse(1L, registerRequest.getUsername(), new RoleResponse(1L, "description"));
 
         when(registerService.registerUser(registerRequest)).thenReturn(registerResponse);
 
@@ -66,7 +67,6 @@ public class RegisterControllerTest {
     @Test
     public void register_NewUserWithExistingUsername_ReturnsCreated() throws Exception {
         RegisterRequest registerRequest = new RegisterRequest("Existing username", "teste");
-        RegisterResponse registerResponse = new RegisterResponse(1L, registerRequest.getUsername());
 
         UsernameAlreadyUsedException exception = new UsernameAlreadyUsedException("Exception message");
         when(registerService.registerUser(registerRequest)).thenThrow(exception);

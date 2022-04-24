@@ -3,7 +3,6 @@ package com.springsecutityjwt.demo.service.jwt;
 import com.springsecutityjwt.demo.config.security.JwtConfiguration;
 import com.springsecutityjwt.demo.dto.response.JwtResponse;
 import com.springsecutityjwt.demo.model.User;
-import com.springsecutityjwt.demo.service.jwt.JwtService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Autowired;
