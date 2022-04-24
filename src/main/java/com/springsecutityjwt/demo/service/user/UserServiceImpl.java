@@ -1,11 +1,8 @@
 package com.springsecutityjwt.demo.service.user;
 
 import com.springsecutityjwt.demo.dto.request.UserRequest;
-import com.springsecutityjwt.demo.dto.request.UserWithRoleRequest;
-import com.springsecutityjwt.demo.dto.response.RegisterResponse;
 import com.springsecutityjwt.demo.dto.response.UserResponse;
 import com.springsecutityjwt.demo.exception.UsernameAlreadyUsedException;
-import com.springsecutityjwt.demo.mapper.RoleMapper;
 import com.springsecutityjwt.demo.mapper.UserMapper;
 import com.springsecutityjwt.demo.model.User;
 import com.springsecutityjwt.demo.repository.UserRepository;

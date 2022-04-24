@@ -1,7 +1,6 @@
 package com.springsecutityjwt.demo.service;
 
 import com.springsecutityjwt.demo.dto.request.UserRequest;
-import com.springsecutityjwt.demo.dto.response.RegisterResponse;
 import com.springsecutityjwt.demo.dto.response.RoleResponse;
 import com.springsecutityjwt.demo.dto.response.UserResponse;
 import com.springsecutityjwt.demo.exception.UsernameAlreadyUsedException;
