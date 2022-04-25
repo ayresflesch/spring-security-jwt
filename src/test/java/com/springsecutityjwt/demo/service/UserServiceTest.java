@@ -17,6 +17,9 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -36,6 +39,24 @@ public class UserServiceTest {
     @Before
     public void init() {
         MockitoAnnotations.openMocks(this);
+    }
+
+    @Test
+    public void getAllUsers_WithUsersOnDB_ReturnsListOfUserResponse() {
+        User user1 = new User(1L, "user 1", "2", new Role(1L, "role 1"));
+        User user2 = new User(2L, "user 2", "2", new Role(2L, "role 2"));
+
+        UserResponse userResponse1 = new UserResponse(user1.getId(), user1.getUsername(), new RoleResponse(user1.getRole().getId(), user1.getRole().getDescription()));
+        UserResponse userResponse2 = new UserResponse(user2.getId(), user2.getUsername(), new RoleResponse(user2.getRole().getId(), user2.getRole().getDescription()));
+
+        when(userRepository.findAll()).thenReturn(Arrays.asList(user1, user2));
+        when(userMapper.toUserResponse(user1)).thenReturn(userResponse1);
+        when(userMapper.toUserResponse(user2)).thenReturn(userResponse2);
+
+        List<UserResponse> allUsers = userService.getAllUsers();
+
+        assertEquals(allUsers.get(0).getId(), userResponse1.getId());
+        assertEquals(allUsers.get(1).getId(), userResponse2.getId());
     }
 
     @Test
