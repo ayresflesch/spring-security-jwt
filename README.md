@@ -44,7 +44,7 @@ $ curl --request POST \
 }'
 ```
 
-### List all users
+### List all Users
 Both roles `member` and `admin` can call this endpoint. It's required to pass the JWT as a Bearer on the Authentication header. 
 
 ```sh
