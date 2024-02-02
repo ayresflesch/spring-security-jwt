@@ -1,10 +1,9 @@
 package com.springsecutityjwt.demo.dto.request;
 
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-
-import javax.validation.constraints.NotNull;
 
 @Data
 @AllArgsConstructor

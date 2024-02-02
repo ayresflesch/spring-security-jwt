@@ -10,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
@@ -19,11 +20,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
+import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+
+import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-@EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableMethodSecurity
 public class SecurityConfiguration {
 
     private static final String ALLOWED_GET_URL = "/h2-console";
@@ -61,10 +66,13 @@ public class SecurityConfiguration {
 
     // authorization configurations
     @Bean
-    SecurityFilterChain web(HttpSecurity http) throws Exception {
+    SecurityFilterChain web(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception {
+        MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
+
         http.authorizeHttpRequests((authorize) -> authorize
-                .antMatchers(HttpMethod.GET, ALLOWED_GET_URL).permitAll()
-                .antMatchers(HttpMethod.POST, PERMIT_POST_URLS).permitAll()
+                .requestMatchers(antMatcher(HttpMethod.GET, ALLOWED_GET_URL)).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/register")).permitAll()
+                .requestMatchers(mvcMatcherBuilder.pattern(HttpMethod.POST, "/auth")).permitAll()
                 .anyRequest().authenticated()
             )
             .csrf().disable()
@@ -78,6 +86,6 @@ public class SecurityConfiguration {
     // static files configurations (js, css, images)
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-        return (web) -> web.ignoring().antMatchers("/h2-console/**");
+        return (web) -> web.ignoring().requestMatchers(antMatcher("/h2-console/**"));
     }
 }
