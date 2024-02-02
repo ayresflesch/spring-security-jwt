@@ -1,80 +1,83 @@
 package com.springsecutityjwt.demo.config.security;
 
-import com.springsecutityjwt.demo.repository.UserRepository;
 import com.springsecutityjwt.demo.service.authentication.AuthenticationServiceImpl;
-import com.springsecutityjwt.demo.service.jwt.JwtService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration {
 
     private static final String ALLOWED_GET_URL = "/h2-console";
     private static final String[] PERMIT_POST_URLS = {"/register", "/auth"};
 
-    @Autowired
-    private AuthenticationServiceImpl authenticationService;
+    private final AuthenticationServiceImpl authenticationService;
 
-    @Autowired
-    private JwtService jwtService;
+    private final JwtAuthenticationFilter JwtAuthenticationFilter;
 
-    @Autowired
-    private UserRepository userRepository;
 
-    @Autowired
-    private JwtConfiguration jwtConfiguration;
-
+    // authentication configurations
     @Bean
     public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
 
-    // for this to work it is required to implement method configure(AuthenticationManagerBuilder)
     @Bean
-    @Override
-    public AuthenticationManager authenticationManager() throws Exception {
-        return super.authenticationManager();
+    public UserDetailsService userDetailsService() {
+        return authenticationService;
     }
 
-    // authentication configurations
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(authenticationService).passwordEncoder(new BCryptPasswordEncoder());
+    @Bean
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration config) throws Exception {
+        return config.getAuthenticationManager();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
+        daoAuthenticationProvider.setUserDetailsService(userDetailsService());
+        daoAuthenticationProvider.setPasswordEncoder(encoder());
+
+        return daoAuthenticationProvider;
     }
 
     // authorization configurations
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .authorizeRequests()
-            .antMatchers(HttpMethod.GET, ALLOWED_GET_URL).permitAll()
-            .antMatchers(HttpMethod.POST, PERMIT_POST_URLS).permitAll()
-            .anyRequest().authenticated()
-            .and().csrf().disable()
+    @Bean
+    SecurityFilterChain web(HttpSecurity http) throws Exception {
+        http.authorizeHttpRequests((authorize) -> authorize
+                .antMatchers(HttpMethod.GET, ALLOWED_GET_URL).permitAll()
+                .antMatchers(HttpMethod.POST, PERMIT_POST_URLS).permitAll()
+                .anyRequest().authenticated()
+            )
+            .csrf().disable()
             .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and().addFilterBefore(new JwtAuthenticationFilter(jwtService, userRepository, jwtConfiguration), UsernamePasswordAuthenticationFilter.class);
+            .and().authenticationProvider(authenticationProvider())
+            .addFilterBefore(JwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
     }
 
     // static files configurations (js, css, images)
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web
-            .ignoring()
-            .antMatchers("/h2-console/**");
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring().antMatchers("/h2-console/**");
     }
 }

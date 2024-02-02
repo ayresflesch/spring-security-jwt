@@ -3,8 +3,10 @@ package com.springsecutityjwt.demo.config.security;
 import com.springsecutityjwt.demo.model.User;
 import com.springsecutityjwt.demo.repository.UserRepository;
 import com.springsecutityjwt.demo.service.jwt.JwtService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -13,6 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Component
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
@@ -20,12 +24,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private final JwtConfiguration jwtConfiguration;
-
-    public JwtAuthenticationFilter(JwtService jwtService, UserRepository userRepository, JwtConfiguration jwtConfiguration) {
-        this.jwtService = jwtService;
-        this.userRepository = userRepository;
-        this.jwtConfiguration = jwtConfiguration;
-    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
